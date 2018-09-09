@@ -1,25 +1,47 @@
 package francescobonni.checkbugpermissiondispatcher
 
+import android.Manifest
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.support.annotation.RequiresApi
+import android.widget.Button
 import android.widget.Toast
+import permissions.dispatcher.*
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.RuntimePermissions
+import android.content.Intent
 
+@RuntimePermissions
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        findViewById<Button>(R.id.button).setOnClickListener { _ ->
+            // NOTE: delegate the permission handling to generated method
+            showCameraWithPermissionCheck()
+            showMessageWithPermissionCheck()
+        }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        onActivityResult(requestCode)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)
     fun showMessage() {
-        Toast.makeText(this,
-                if(Settings.canDrawOverlays(this))
-                    "can draw overlays : true"
-                else
-                    "can draw overlays : false", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "can draw overlays : true", Toast.LENGTH_LONG).show()
+    }
+
+    @NeedsPermission(Manifest.permission.CAMERA)
+    fun showCamera() {
+        Toast.makeText(this,"Camera : true", Toast.LENGTH_LONG).show()
     }
 }
