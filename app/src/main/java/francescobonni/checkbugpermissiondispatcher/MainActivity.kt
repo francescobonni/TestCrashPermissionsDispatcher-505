@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         findViewById<Button>(R.id.button).setOnClickListener { _ ->
             // NOTE: delegate the permission handling to generated method
-            showCameraWithPermissionCheck()
             showMessageWithPermissionCheck()
         }
     }
@@ -30,18 +29,8 @@ class MainActivity : AppCompatActivity() {
         onActivityResult(requestCode)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
-    }
-
     @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)
     fun showMessage() {
         Toast.makeText(this, "can draw overlays : true", Toast.LENGTH_LONG).show()
-    }
-
-    @NeedsPermission(Manifest.permission.CAMERA)
-    fun showCamera() {
-        Toast.makeText(this,"Camera : true", Toast.LENGTH_LONG).show()
     }
 }
