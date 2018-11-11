@@ -21,7 +21,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         findViewById<Button>(R.id.button).setOnClickListener { _ ->
             // NOTE: delegate the permission handling to generated method
-            showMessageWithPermissionCheck()
+            showMessageOverlayWithPermissionCheck()
+        }
+        findViewById<Button>(R.id.button2).setOnClickListener { _ ->
+            // NOTE: delegate the permission handling to generated method
+            showMessageWriteSettingsWithPermissionCheck()
         }
     }
 
@@ -30,7 +34,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    fun showMessage() {
+    fun showMessageOverlay() {
         Toast.makeText(this, "can draw overlays : true", Toast.LENGTH_LONG).show()
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_SETTINGS)
+    fun showMessageWriteSettings() {
+        Toast.makeText(this, "write settings : true", Toast.LENGTH_LONG).show()
     }
 }
